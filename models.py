@@ -25,4 +25,4 @@ class Post(models.Model):
     created = models.DateField(default=date.today)
     edited = models.DateField(auto_now=True)
     content = models.TextField()
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)

@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateField(default=datetime.date.today)),
                 ('edited', models.DateField(auto_now=True)),
                 ('content', models.TextField()),
-                ('tags', models.ManyToManyField(to='loki.Tag')),
+                ('tags', models.ManyToManyField(to='loki.Tag', blank=True)),
             ],
         ),
     ]
