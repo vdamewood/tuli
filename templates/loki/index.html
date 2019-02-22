@@ -1,0 +1,38 @@
+{% extends 'loki/base.html' %}
+{% comment %}
+Copyright 2019 Vincent Damewood
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+{% endcomment %}
+{% block title %}Blog{% endblock %}
+{% block content %}
+<h1>Blog</h1>
+{% if posts %}
+	<h2>Posts</h2>
+	<ul>
+	{% for post in posts %}
+		<li><a href="posts/{{post.slug}}">{{post.title}}</a></ul>
+	{% endfor %}
+		</li>
+    </ul>
+{% else %}
+    <p>No posts are available.</p>
+{% endif %}
+
+{% if tags %}
+<h2>Tags</h2>
+
+<p> | {% for tag in tags %}<a href="tags/{{tag.slug}}">{{tag.name}}</a> | {%endfor%}</p>
+{%endif %}
+
+{% endblock %}
