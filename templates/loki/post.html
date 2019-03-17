@@ -18,6 +18,8 @@ limitations under the License.
 {% block content %}
 <h1>{{post.title}}</h1>
 <div>Created: {{post.created|date:'Y-m-d'}}</div>
+{% if post.edited != post.created %}
 <div>Edited: {{post.edited|date:'Y-m-d'}}</div>
+{% endif %}
 {{post.content|safe}}
 {% endblock %}
