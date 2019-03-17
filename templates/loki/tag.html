@@ -21,7 +21,7 @@ limitations under the License.
 {% if tag.post_set.count > 0 %}
 	<ul>
 	{% for post in tag.post_set.all %}
-		<li><a href="../posts/{{post.slug}}">{{post.title}}</a> ({{post.created}})</ul>
+		<li><a href="{% url 'loki-post' post.slug %}">{{post.title}}</a> ({{post.created}})</ul>
 	{% endfor %}
 		</li>
     </ul>

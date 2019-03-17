@@ -21,7 +21,7 @@ limitations under the License.
 	<h2>Posts</h2>
 	<ul>
 	{% for post in posts %}
-		<li><a href="posts/{{post.slug}}">{{post.title}}</a></li>
+		<li><a href="{% url 'loki-post' post.slug %}">{{post.title}}</a></li>
 	{% endfor %}
 		</ul>
     </ul>
@@ -32,7 +32,7 @@ limitations under the License.
 {% if tags %}
 <h2>Tags</h2>
 
-<p> | {% for tag in tags %}<a href="tags/{{tag.slug}}">{{tag.name}}</a> | {%endfor%}</p>
+<p> | {% for tag in tags %}<a href="{% url 'loki-tag' tag.slug %}">{{tag.name}}</a> | {%endfor%}</p>
 {%endif %}
 
 {% endblock %}
