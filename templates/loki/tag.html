@@ -16,11 +16,12 @@ limitations under the License.
 {% endcomment %}
 {% block title %}{{tag.name}}{% endblock %}
 {% block content %}
-<h1>{{tag.name}}</h1>
-{% if posts %}
+<h1>Posts Tagged “{{tag.name}}”</h1>
+
+{% if tag.post_set.count > 0 %}
 	<ul>
-	{% for post in posts %}
-		<li><a href="posts/{{post.slug}}">{{post.title}}</a></ul>
+	{% for post in tag.post_set.all %}
+		<li><a href="../posts/{{post.slug}}">{{post.title}}</a> ({{post.created}})</ul>
 	{% endfor %}
 		</li>
     </ul>
