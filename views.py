@@ -16,21 +16,17 @@ from django.shortcuts import get_object_or_404, render
 from .models import Post, Tag
 
 def show_index(request):
-    posts = Post.objects.order_by('created')
-    tags = Tag.objects.order_by('name')
     return render(request, 'loki/index.html', {
-        'posts': posts,
-        'tags': tags,
+        'posts': Post.objects.order_by('created'),
+        'tags': Tag.objects.order_by('name'),
     })
 
 def show_post(request, slug):
-    post = get_object_or_404(Post, slug=slug)
-    return render(request, "loki/post.html", {"post": post})
+    return render(request, 'loki/post.html', {
+        'post': get_object_or_404(Post, slug=slug)
+    })
 
 def show_tag(request, slug):
-    tag = get_object_or_404(Tag, slug=slug)
-    posts = None
-    return render(request, "loki/tag.html", {
-        'tag': tag,
-        'posts': posts,
+    return render(request, 'loki/tag.html', {
+        'tag': get_object_or_404(Tag, slug=slug),
     })
