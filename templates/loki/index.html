@@ -21,9 +21,9 @@ limitations under the License.
 	<h2>Posts</h2>
 	<ul>
 	{% for post in posts %}
-		<li><a href="posts/{{post.slug}}">{{post.title}}</a></ul>
+		<li><a href="posts/{{post.slug}}">{{post.title}}</a></li>
 	{% endfor %}
-		</li>
+		</ul>
     </ul>
 {% else %}
     <p>No posts are available.</p>
