@@ -12,21 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Post, Tag
 
-def show_index(request):
+def index(request):
     return render(request, 'loki/index.html', {
         'posts': Post.objects.order_by('created'),
         'tags': Tag.objects.order_by('name'),
     })
 
-def show_post(request, slug):
+def posts(request):
+    return redirect('loki-home')
+
+def post(request, slug):
     return render(request, 'loki/post.html', {
         'post': get_object_or_404(Post, slug=slug)
     })
 
-def show_tag(request, slug):
+def tags(request):
+    return redirect('loki-home')
+
+def tag(request, slug):
     return render(request, 'loki/tag.html', {
         'tag': get_object_or_404(Tag, slug=slug),
     })
