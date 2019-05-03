@@ -14,6 +14,16 @@
 
 from datetime import date
 from django.db import models
+from django.conf import settings
+
+class Media(models.Model):
+    file = models.FileField(upload_to=settings.LOKI_PATH)
+
+    def __str__(self):
+        return("{} (id: {})".format(
+            self.file.name.replace(settings.LOKI_PATH+'/', ''),
+            self.id if self.id != '' else '-',
+        ))
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -29,6 +39,41 @@ class Post(models.Model):
     edited = models.DateField(auto_now=True)
     content = models.TextField()
     tags = models.ManyToManyField(Tag, blank=True)
+
+    def parsed_content(self):
+        chunks = str(self.content).split("<loki-")
+        converted_chunks = [chunks[0]]
+        for chunk in chunks[1:]:
+            end = chunk.find('>')
+
+            tokens = chunk[:end].split()
+            tagname = tokens[0]
+
+            # TODO: If other replacement tags are developed, implement
+            #   a real lookup.
+            if tagname != "media":
+                replacement = "[Invalid Replacement:loki-{}]".format(tagname)
+            else:
+                attributes = {}
+                for attr in tokens[1:]:
+                    key, value = attr.split('=', 1)
+                    if value[0] == '"':
+                        quote_pos = value[1:].find('"')
+                        value = value[1:quote_pos+1]
+                    elif value[0] == '\'':
+                        quote_pos = value[1:].find('\'')
+                        value = value[1:quote_pos+1]
+                    attributes[key] = value
+
+                try:
+                    media = Media.objects.get(id=attributes['id'])
+                except Media.DoesNotExist:
+                    replacement = "[Media not found]"
+                else:
+                    replacement = "<img src=\"{}\">".format(media.file.url)
+            converted_chunks.append(replacement + chunk[end+1:])
+
+        return "".join(converted_chunks)
 
     def __str__(self):
         return format(self.title)

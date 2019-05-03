@@ -21,5 +21,5 @@ limitations under the License.
 {% if post.edited != post.created %}
 <div>Edited: {{post.edited|date:'Y-m-d'}}</div>
 {% endif %}
-{{post.content|safe}}
+{{post.parsed_content|safe}}
 {% endblock %}
