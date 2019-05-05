@@ -15,6 +15,7 @@
 from datetime import date
 from django.db import models
 from django.conf import settings
+from django.template import loader
 
 class Media(models.Model):
     file = models.FileField(upload_to=settings.LOKI_PATH)
@@ -70,7 +71,19 @@ class Post(models.Model):
                 except Media.DoesNotExist:
                     replacement = "[Media not found]"
                 else:
-                    replacement = "<img src=\"{}\">".format(media.file.url)
+                    tpl = loader.get_template("loki/intext-image.html")
+                    ctx = {}
+                    ctx["src"] = media.file.url
+                    for attr in ['height', 'width', 'caption']:
+                        try:
+                            ctx[attr] = attributes[attr]
+                        except KeyError:
+                            print("Can't find {}".format(attr))
+                            pass
+
+                    print(ctx)
+
+                    replacement = tpl.render(ctx)
             converted_chunks.append(replacement + chunk[end+1:])
 
         return "".join(converted_chunks)
