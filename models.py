@@ -18,13 +18,16 @@ from django.conf import settings
 from django.template import loader
 
 class Media(models.Model):
+    name = models.CharField(max_length=48, db_index=True)
     file = models.FileField(upload_to=settings.LOKI_PATH)
 
     def __str__(self):
         return("{} (id: {})".format(
-            self.file.name.replace(settings.LOKI_PATH+'/', ''),
-            self.id if self.id != '' else '-',
-        ))
+            self.name,
+            self.id if self.id is not None else '-'))
+    class Meta:
+        verbose_name = "medium"
+        verbose_name_plural = "media"
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -112,7 +115,7 @@ def parse_chunk(chunk):
 
 def render_media(attributes):
     try:
-        media = Media.objects.get(id=attributes['id'])
+        media = Media.objects.get(name=attributes['name'])
     except Media.DoesNotExist:
         raise ElementError("Media not found")
     else:
