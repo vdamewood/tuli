@@ -18,8 +18,20 @@ from django.conf import settings
 from django.template import loader
 
 class Media(models.Model):
+    IMAGE = 0
+    AUDIO = 1
+    VIDEO = 2
+    type_choices = [
+        (IMAGE, "image"),
+        (AUDIO, "audio"),
+        (VIDEO, "video"),
+    ]
     name = models.CharField(max_length=48, db_index=True)
     file = models.FileField(upload_to=settings.LOKI_PATH)
+    type = models.SmallIntegerField(choices=type_choices)
+
+    def type_name(self):
+        return Media.type_choices[self.type][1]
 
     def __str__(self):
         return("{} (id: {})".format(
@@ -122,7 +134,7 @@ def render_media(attributes):
     except Media.DoesNotExist:
         raise ElementError("Media not found")
     else:
-        tpl = loader.get_template("loki/intext-image.html")
+        tpl = loader.get_template("loki/intext-{}.html".format(media.type_name()))
         ctx = {}
         ctx["src"] = media.file.url
         for attr in ['height', 'width', 'caption']:
