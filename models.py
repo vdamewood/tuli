@@ -33,6 +33,53 @@ class Tag(models.Model):
     def __str__(self):
         return format(self.name)
 
+class ParseError(Exception):
+    def __init__(self, message):
+        self.message = message
+
+class ElementError(Exception):
+    def __init__(self, message):
+        self.message = message
+
+def parse_chunk(chunk):
+    end = chunk.find('>')
+    tokens = chunk[:end].split()
+    tag = tokens[0]
+
+    attributes = {}
+    for attr in tokens[1:]:
+        key, value = attr.split('=', 1)
+        if value[0] == '"':
+            quote_pos = value[1:].find('"')
+            value = value[1:quote_pos+1]
+        elif value[0] == '\'':
+            quote_pos = value[1:].find('\'')
+            value = value[1:quote_pos+1]
+        attributes[key] = value
+    print("Parsed: {} {} {}".format(tag, attributes, end))
+    return tag, attributes, chunk[end+1:]
+
+def render_media(attributes):
+    try:
+        media = Media.objects.get(id=attributes['id'])
+    except Media.DoesNotExist:
+        raise ElementError("Media not found")
+    else:
+        tpl = loader.get_template("loki/intext-image.html")
+        ctx = {}
+        ctx["src"] = media.file.url
+        for attr in ['height', 'width', 'caption']:
+            try:
+                ctx[attr] = attributes[attr]
+            except KeyError:
+                print("Can't find {}".format(attr))
+                pass
+        return tpl.render(ctx)
+
+renders = {
+    "media": render_media,
+}
+
 class Post(models.Model):
     title = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True)
@@ -45,46 +92,24 @@ class Post(models.Model):
         chunks = str(self.content).split("<loki-")
         converted_chunks = [chunks[0]]
         for chunk in chunks[1:]:
-            end = chunk.find('>')
-
-            tokens = chunk[:end].split()
-            tagname = tokens[0]
-
-            # TODO: If other replacement tags are developed, implement
-            #   a real lookup.
-            if tagname != "media":
-                replacement = "[Invalid Replacement:loki-{}]".format(tagname)
+            try:
+                tag, attributes, rest = (parse_chunk(chunk))
+                render = renders[tag](attributes)
+            except ParseError as e:
+                converted_chunks.append(
+                    "[Parse Error: {}]{}".format(
+                        e.message,
+                        chunk[chunk.find(">")+1:]))
+            except ElementError as e:
+                converted_chunks.append(
+                    "[Element Error: {}]{}".format(
+                        e.message,
+                        chunk[chunk.find(">")+1:]))
             else:
-                attributes = {}
-                for attr in tokens[1:]:
-                    key, value = attr.split('=', 1)
-                    if value[0] == '"':
-                        quote_pos = value[1:].find('"')
-                        value = value[1:quote_pos+1]
-                    elif value[0] == '\'':
-                        quote_pos = value[1:].find('\'')
-                        value = value[1:quote_pos+1]
-                    attributes[key] = value
-
-                try:
-                    media = Media.objects.get(id=attributes['id'])
-                except Media.DoesNotExist:
-                    replacement = "[Media not found]"
-                else:
-                    tpl = loader.get_template("loki/intext-image.html")
-                    ctx = {}
-                    ctx["src"] = media.file.url
-                    for attr in ['height', 'width', 'caption']:
-                        try:
-                            ctx[attr] = attributes[attr]
-                        except KeyError:
-                            print("Can't find {}".format(attr))
-                            pass
-
-                    print(ctx)
-
-                    replacement = tpl.render(ctx)
-            converted_chunks.append(replacement + chunk[end+1:])
+                print("Render: {}".format(render))
+                print("Rest: {}".format(rest))
+                converted_chunks.append(render)
+                converted_chunks.append(rest)
 
         return "".join(converted_chunks)
 
