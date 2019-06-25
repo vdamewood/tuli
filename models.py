@@ -94,20 +94,23 @@ def parse_chunk(chunk):
                 value_start = position
                 while chunk[position] != '"':
                     position +=1
+                value = chunk[value_start:position]
+                position += 1
             elif chunk[position] == '\'':
                 position += 1
                 value_start = position
                 while chunk[position] != '\'':
                     position +=1
+                value = chunk[value_start:position]
+                position += 1
             elif chunk[position].isalnum():
                 value_start = position
                 position += 1
                 while chunk[position].isalnum():
                     position += 1
+                value = chunk[value_start:position]
             else:
                 raise ParseError("Invalid attribute value")
-            value = chunk[value_start:position]
-            position += 1
             attributes[key] = value
     except IndexError:
         raise ParseError("Unexpected end of chunk.")
