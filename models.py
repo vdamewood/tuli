@@ -42,22 +42,73 @@ class ElementError(Exception):
         self.message = message
 
 def parse_chunk(chunk):
-    end = chunk.find('>')
-    tokens = chunk[:end].split()
-    tag = tokens[0]
-
+    position = 0
+    while chunk[position].isalnum():
+        position += 1
+    if position == 0:
+        raise ParseError("Missing element name")
+    tag = chunk[:position]
     attributes = {}
-    for attr in tokens[1:]:
-        key, value = attr.split('=', 1)
-        if value[0] == '"':
-            quote_pos = value[1:].find('"')
-            value = value[1:quote_pos+1]
-        elif value[0] == '\'':
-            quote_pos = value[1:].find('\'')
-            value = value[1:quote_pos+1]
-        attributes[key] = value
-    print("Parsed: {} {} {}".format(tag, attributes, end))
-    return tag, attributes, chunk[end+1:]
+
+    try:
+        while True:
+            print(chunk[position])
+            if chunk[position].isspace():
+                position += 1
+                while chunk[position].isspace():
+                    position += 1
+
+            if chunk[position] == ">":
+                position += 1
+                break
+
+            # Find Key
+            key_start = position
+            if not chunk[position].isalnum():
+                raise ParseError("Unexpected {}".format(chunk[position]))
+            while chunk[position].isalnum():
+                position += 1
+            key = chunk[key_start:position]
+
+            if chunk[position].isspace():
+                position += 1
+                while chunk[position].isspace():
+                    position += 1
+
+            if chunk[position] != '=':
+                attributes[key] = ""
+                continue
+            position += 1
+
+            if chunk[position].isspace():
+                position += 1
+                while chunk[position].isspace():
+                    position += 1
+
+            # Find value.
+            if chunk[position] == '"':
+                position += 1
+                value_start = position
+                while chunk[position] != '"':
+                    position +=1
+            elif chunk[position] == '\'':
+                position += 1
+                value_start = position
+                while chunk[position] != '\'':
+                    position +=1
+            elif chunk[position].isalnum():
+                value_start = position
+                position += 1
+                while chunk[position].isalnum():
+                    position += 1
+            else:
+                raise ParseError("Invalid attribute value")
+            value = chunk[value_start:position]
+            position += 1
+            attributes[key] = value
+    except IndexError:
+        raise ParseError("Unexpected end of chunk.")
+    return tag, attributes, chunk[position:]
 
 def render_media(attributes):
     try:
