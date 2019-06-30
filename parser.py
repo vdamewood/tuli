@@ -14,7 +14,7 @@
 
 from html.parser import HTMLParser as HTMLParser
 from django.template import loader
-from loki.models import Media
+from loki.models import Image
 
 class _CustomTagError(Exception):
     def __init__(self, msg):
@@ -22,15 +22,23 @@ class _CustomTagError(Exception):
 
 def _image(attributes, end):
     try:
-        media = Media.objects.get(name=attributes['name'])
+        media = Image.objects.get(lookup=attributes['lookup'])
     except KeyError:
         raise _CustomTagError("Name required in media tag")
     except Media.DoesNotExist:
         raise _CustomTagError("Media not found")
     else:
-        tpl = loader.get_template("loki/image.html".format(media.type_name()))
+        tpl = loader.get_template("loki/image.html")
         ctx = {}
-        ctx["src"] = media.file.url
+        ctx["src"] = media.imagefile_set.get(sequence=0).file.url
+        ctx["files"] = []
+
+        for file in media.imagefile_set.order_by('sequence'):
+            ctx["files"].append({
+                "filename": file.file.url,
+                "width": file.width,
+                "min_width": file.width+20,
+            })
         for attr in ['height', 'width', 'caption']:
             try:
                 ctx[attr] = attributes[attr]

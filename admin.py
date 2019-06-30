@@ -15,7 +15,12 @@
 from django.contrib import admin
 from . import models
 
-admin.site.register(models.Media)
+class ImageFileInline(admin.TabularInline):
+    model = models.ImageFile
+
+@admin.register(models.Image)
+class ProjectAdmin(admin.ModelAdmin):
+    inlines = [ImageFileInline]
 
 @admin.register(models.Post)
 class PostAdmin(admin.ModelAdmin):

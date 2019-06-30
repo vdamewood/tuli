@@ -12,14 +12,24 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Media',
+            name='Image',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=48, db_index=True)),
-                ('file', models.FileField(upload_to=settings.LOKI_PATH)),
-                ('type', models.SmallIntegerField(choices=[(0, 'image'), (1, 'audio'), (2, 'video')])),
+                ('lookup', models.CharField(db_index=True, max_length=48)),
             ],
-            options={'verbose_name': 'medium', 'verbose_name_plural': 'media'},
+        ),
+        migrations.CreateModel(
+            name='ImageFile',
+            options={
+                'unique_together': {('image', 'sequence')},
+            },
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('file', models.FileField(upload_to=settings.LOKI_PATH)),
+                ('width', models.SmallIntegerField()),
+                ('image', models.ForeignKey(on_delete=models.deletion.CASCADE, to='loki.Image')),
+                ('sequence', models.SmallIntegerField()),
+            ],
         ),
         migrations.CreateModel(
             name='Tag',

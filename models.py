@@ -16,30 +16,19 @@ from datetime import date
 from django.db import models
 from django.conf import settings
 
-class Media(models.Model):
-    IMAGE = 0
-    AUDIO = 1
-    VIDEO = 2
-    type_choices = [
-        (IMAGE, "image"),
-        (AUDIO, "audio"),
-        (VIDEO, "video"),
-    ]
-    name = models.CharField(max_length=48, db_index=True)
-    file = models.FileField(upload_to=settings.LOKI_PATH)
-    type = models.SmallIntegerField(choices=type_choices)
-
-    def type_name(self):
-        return Media.type_choices[self.type][1]
+class Image(models.Model):
+    lookup = models.CharField(max_length=48, db_index=True)
 
     def __str__(self):
-        return("{} (id: {})".format(
-            self.name,
-            self.id if self.id is not None else '-'))
-    class Meta:
-        verbose_name = "medium"
-        verbose_name_plural = "media"
+        return(self.lookup)
 
+class ImageFile(models.Model):
+    image = models.ForeignKey(Image, models.CASCADE)
+    file = models.FileField(upload_to=settings.LOKI_PATH)
+    width = models.SmallIntegerField()
+    sequence = models.SmallIntegerField()
+    class Meta:
+        unique_together = ('image', 'sequence')
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
