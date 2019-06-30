@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Post, Tag
+from .parser import convert
 
 def index(request):
     return render(request, 'loki/index.html', {
@@ -25,9 +27,9 @@ def posts(request):
     return redirect('loki-home')
 
 def post(request, slug):
-    return render(request, 'loki/post.html', {
-        'post': get_object_or_404(Post, slug=slug)
-    })
+    p = get_object_or_404(Post, slug=slug)
+    p.parsed_content = convert(p.content)
+    return render(request, 'loki/post.html', {'post': p})
 
 def tags(request):
     return redirect('loki-home')
