@@ -20,7 +20,7 @@ class _CustomTagError(Exception):
     def __init__(self, msg):
         self.message = msg
 
-def _media(attributes, end):
+def _image(attributes, end):
     try:
         media = Media.objects.get(name=attributes['name'])
     except KeyError:
@@ -28,7 +28,7 @@ def _media(attributes, end):
     except Media.DoesNotExist:
         raise _CustomTagError("Media not found")
     else:
-        tpl = loader.get_template("loki/intext-{}.html".format(media.type_name()))
+        tpl = loader.get_template("loki/image.html".format(media.type_name()))
         ctx = {}
         ctx["src"] = media.file.url
         for attr in ['height', 'width', 'caption']:
@@ -44,11 +44,11 @@ def _null_end_tag():
     return ''
 
 _s = {
-    "media": _media,
+    "image": _image,
 }
 
 _e = {
-    "media": _null_end_tag,
+    "image": _null_end_tag,
 }
 
 class LokiParser(HTMLParser):
