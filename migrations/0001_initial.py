@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('file', models.FileField(upload_to=settings.LOKI_PATH)),
                 ('width', models.SmallIntegerField()),
-                ('css_media', models.CharField(max_length=250)),
+                ('css_media', models.CharField(max_length=250, blank=True)),
                 ('image', models.ForeignKey(on_delete=models.deletion.CASCADE, to='loki.Image')),
                 ('sequence', models.SmallIntegerField()),
             ],

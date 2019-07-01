@@ -7,7 +7,7 @@
 	"
 
 	sizes="{% for file in files %}
-		({{file.css_media}}) {{file.width}}px,
+		{% if file.css_media != '' %}({{file.css_media}}){% endif %} {{file.width}}px,
 	{% endfor %}">
 	{% if caption %}
 	<figcaption class="loki-image-caption">{{caption}}</figcaption>
