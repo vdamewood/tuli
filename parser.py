@@ -31,15 +31,8 @@ def _image(attributes, end):
         tpl = loader.get_template("loki/image.html")
         ctx = {}
         ctx["src"] = media.imagefile_set.get(sequence=0).file.url
-        ctx["files"] = []
-
-        for file in media.imagefile_set.order_by('sequence'):
-            ctx["files"].append({
-                "filename": file.file.url,
-                "width": file.width,
-                "min_width": file.width+20,
-            })
-        for attr in ['height', 'width', 'caption']:
+        ctx["files"] = media.imagefile_set.order_by('sequence')
+        for attr in ['caption']:
             try:
                 ctx[attr] = attributes[attr]
             except KeyError:

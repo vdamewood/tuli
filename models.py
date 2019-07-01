@@ -26,7 +26,12 @@ class ImageFile(models.Model):
     image = models.ForeignKey(Image, models.CASCADE)
     file = models.FileField(upload_to=settings.LOKI_PATH)
     width = models.SmallIntegerField()
+    css_media = models.CharField(max_length=250)
+
     sequence = models.SmallIntegerField()
+    def url(self):
+        return self.file.url
+
     class Meta:
         unique_together = ('image', 'sequence')
 
