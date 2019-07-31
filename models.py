@@ -26,13 +26,13 @@ class ImageFile(models.Model):
     image = models.ForeignKey(Image, models.CASCADE)
     file = models.FileField(upload_to=settings.LOKI_PATH)
     width = models.SmallIntegerField()
-    css_media = models.CharField(max_length=250, blank=True)
 
     sequence = models.SmallIntegerField()
     def url(self):
         return self.file.url
 
     class Meta:
+        get_latest_by = ('image', 'sequence')
         unique_together = ('image', 'sequence')
 
 class Tag(models.Model):

@@ -63,7 +63,6 @@ class ImageTag(ClosedTag):
         else:
             tpl = loader.get_template('loki/image.html')
             ctx = {}
-            ctx['src'] = image.imagefile_set.get(sequence=0).file.url
             ctx['files'] = image.imagefile_set.order_by('sequence')
             try:
                 ctx['caption'] = attributes['caption']

@@ -22,12 +22,12 @@ class Migration(migrations.Migration):
             name='ImageFile',
             options={
                 'unique_together': {('image', 'sequence')},
+                'get_latest_by': ('image', 'sequence'),
             },
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('file', models.FileField(upload_to=settings.LOKI_PATH)),
                 ('width', models.SmallIntegerField()),
-                ('css_media', models.CharField(max_length=250, blank=True)),
                 ('image', models.ForeignKey(on_delete=models.deletion.CASCADE, to='loki.Image')),
                 ('sequence', models.SmallIntegerField()),
             ],

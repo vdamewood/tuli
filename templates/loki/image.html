@@ -1,13 +1,12 @@
 <figure class="loki-image-figure">
-	<img class="loki-image-img" src="{{src}}"
+	<img class="loki-image-img" src="{{files.latest.url}}"
 	srcset="
 		{% for file in files %}
 			{{file.url}} {{file.width}}w,
 		{% endfor %}
 	"
-
 	sizes="{% for file in files %}
-		{% if file.css_media != '' %}({{file.css_media}}){% endif %} {{file.width}}px,
+		{% if not forloop.last %}(min-width: {{file.width}}px){% endif %} {{file.width}}px,
 	{% endfor %}">
 	{% if caption %}
 	<figcaption class="loki-image-caption">{{caption}}</figcaption>
