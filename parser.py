@@ -13,44 +13,7 @@
 # limitations under the License.
 
 from html.parser import HTMLParser as HTMLParser
-from django.template import loader
-from loki.models import Image
-
-class _CustomTagError(Exception):
-    def __init__(self, msg):
-        self.message = msg
-
-def _image(attributes, end):
-    try:
-        media = Image.objects.get(lookup=attributes['lookup'])
-    except KeyError:
-        raise _CustomTagError("Name required in media tag")
-    except Media.DoesNotExist:
-        raise _CustomTagError("Media not found")
-    else:
-        tpl = loader.get_template("loki/image.html")
-        ctx = {}
-        ctx["src"] = media.imagefile_set.get(sequence=0).file.url
-        ctx["files"] = media.imagefile_set.order_by('sequence')
-        for attr in ['caption']:
-            try:
-                ctx[attr] = attributes[attr]
-            except KeyError:
-                pass
-        return tpl.render(ctx)
-
-# Some custom tags will not have end tags, or end tags won't matter.
-# These all can share a single, null end tag implementation.
-def _null_end_tag():
-    return ''
-
-_s = {
-    "image": _image,
-}
-
-_e = {
-    "image": _null_end_tag,
-}
+from . import tags
 
 class LokiParser(HTMLParser):
     def reset(self):
@@ -69,27 +32,46 @@ class LokiParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag[:5] == "loki-":
             try:
-                self._add(_s[tag[5:]](dict(attrs), False))
-            except _CustomTagError as e:
-                self._add("[Error: {}]".format(e.message))
+                self._add(tags.tag(tag[5:]).start(dict(attrs)))
+            except tags.TagNotFound as e:
+                self._add("[Tag not found: {}]".format(
+                    e.tag_name))
+            except tags.MissingAttribute as e:
+                self._add("[Missing attribute ({}) in {} tag.]".format(
+                    e.attribute,
+                    e.tag_name))
+            except tags.TagError as e:
+                self._add("[Error in {} tag: {}]".format(
+                    e.tag_name,
+                    e.message))
         else:
             self._add(self.get_starttag_text())
 
     def handle_startendtag(self, tag, attrs):
         if tag[:5] == "loki-":
             try:
-                self._add(_s[tag[5:]](dict(attrs), True))
-            except _CustomTagError as e:
-                self._add("[Error: {}]".format(e.message))
+                self._add(tags.tag(tag[5:]).closed_start(dict(attrs)))
+            except tags.TagNotFound as e:
+                self._add("[Unknown Tag: {}]".format(
+                    e.tag_name))
+            except tags.MissingAttribute as e:
+                self._add("[Missing attribute ({}) in {} tag.]".format(
+                    e.attribute,
+                    e.tag_name))
+            except tags.TagError as e:
+                self._add("[Error in {} tag: {}]".format(
+                    e.tag_name,
+                    e.message))
         else:
             self._add(self.get_starttag_text())
 
     def handle_endtag(self, tag):
         if tag[:5] == "loki-":
             try:
-                self._add(_e[tag[5:]](dict(attrs)))
-            except _CustomTagError as e:
-                self._add("[Error: {}]".format(e.message))
+                self._add(tags.tag(tag[5:]).end(dict(attrs)))
+            except tags.TagNotFound as e:
+                self._add("[Unknown Tag: {}]".format(
+                    e.tag_name))
         else:
             self._add('</{}>'.format(tag))
 
