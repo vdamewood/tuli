@@ -18,7 +18,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='loki-home'),
     path('posts/', views.posts, name='loki-post-list'),
-    path('posts/<slug>', views.post, name='loki-post'),
+    path('posts/<slug>', views.post, name='loki-post-show'),
     path('tags/', views.tags, name='loki-tag-list'),
-    path('tags/<slug>', views.tag, name='loki-tag'),
+    path('tags/<slug>', views.tag, name='loki-tag-show'),
 ]
