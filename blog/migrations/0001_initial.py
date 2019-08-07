@@ -2,7 +2,7 @@ import datetime
 from django.conf import settings
 from django.db import migrations, models
 
-import loki.models
+import loki.blog.models
 
 class Migration(migrations.Migration):
 
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('file', models.FileField(upload_to=settings.LOKI_PATH)),
                 ('width', models.SmallIntegerField()),
-                ('image', models.ForeignKey(on_delete=models.deletion.CASCADE, to='loki.Image')),
+                ('image', models.ForeignKey(on_delete=models.deletion.CASCADE, to='blog.Image')),
                 ('sequence', models.SmallIntegerField()),
             ],
         ),
@@ -49,8 +49,8 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(unique=True)),
                 ('created', models.DateField(default=datetime.date.today)),
                 ('edited', models.DateField(auto_now=True)),
-                ('content', loki.models.ContentField()),
-                ('tags', models.ManyToManyField(to='loki.Tag', blank=True)),
+                ('content', loki.blog.models.ContentField()),
+                ('tags', models.ManyToManyField(to='blog.Tag', blank=True)),
             ],
         ),
     ]
