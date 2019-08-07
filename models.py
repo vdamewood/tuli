@@ -42,13 +42,53 @@ class Tag(models.Model):
     def __str__(self):
         return format(self.name)
 
+class Content:
+    def __init__(self, raw):
+        self._raw = raw
+        self._parsed = None
+        self._plain = None
+    def parse(self):
+        if self._parsed is None:
+            from .parser import LokiParser
+            p = LokiParser()
+            p.feed(self._raw)
+            p.close()
+            self._parsed = p.get_output()
+        return self._parsed
+    def plain(self):
+        raise NotImplementedError()
+    def __str__(self):
+        return self._raw
+
+class ContentField(models.TextField):
+    def from_db_value(self, value, expression, connection):
+        if value is None:
+            return value
+        elif isinstance(value, str):
+            return Content(value)
+        else:
+            raise TypeError()
+    def to_python(self, value):
+        if isinstance(value, Content) or value is None:
+            return value
+        elif isinstance(value, str):
+            return Content(value)
+        else:
+            raise TypeError()
+    def get_prep_value(self, value):
+        if isinstance(value, Content):
+            return str(value)
+        elif isinstance(value, str) or value is None:
+            return value
+        else:
+            raise TypeError("Type {} not supported.".format(type(value)))
 
 class Post(models.Model):
     title = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True)
     created = models.DateField(default=date.today)
     edited = models.DateField(auto_now=True)
-    content = models.TextField()
+    content = ContentField()
     tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):

@@ -15,7 +15,6 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Post, Tag
-from .parser import convert
 
 def index(request):
     return render(request, 'loki/index.html', {
@@ -28,7 +27,6 @@ def posts(request):
 
 def post(request, slug):
     p = get_object_or_404(Post, slug=slug)
-    p.parsed_content = convert(p.content)
     return render(request, 'loki/post.html', {'post': p})
 
 def tags(request):

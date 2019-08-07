@@ -2,6 +2,7 @@ import datetime
 from django.conf import settings
 from django.db import migrations, models
 
+import loki.models
 
 class Migration(migrations.Migration):
 
@@ -48,7 +49,7 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(unique=True)),
                 ('created', models.DateField(default=datetime.date.today)),
                 ('edited', models.DateField(auto_now=True)),
-                ('content', models.TextField()),
+                ('content', loki.models.ContentField()),
                 ('tags', models.ManyToManyField(to='loki.Tag', blank=True)),
             ],
         ),

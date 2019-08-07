@@ -77,9 +77,3 @@ class LokiParser(HTMLParser):
 
     def handle_data(self, data):
         self._add(data)
-
-def convert(in_str):
-    p = LokiParser()
-    p.feed(in_str)
-    p.close()
-    return p.get_output()
