@@ -15,6 +15,8 @@
 from datetime import date
 from django.db import models
 
+import loki.models
+
 class License(models.Model):
     name = models.CharField(max_length=55)
     abbreviation = models.CharField(max_length=12)
@@ -43,7 +45,7 @@ class Project(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50)
     description = models.CharField(max_length=250)
-    overview = models.TextField()
+    overview = loki.models.ContentField()
 
     def main_component(self):
         try:

@@ -16,6 +16,7 @@ import datetime
 from django.db import migrations, models
 import django.db.models.deletion
 
+import loki.models
 
 class Migration(migrations.Migration):
 
@@ -56,7 +57,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=50)),
                 ('slug', models.SlugField()),
                 ('description', models.CharField(max_length=250)),
-                ('overview', models.TextField()),
+                ('overview', loki.models.ContentField()),
             ],
         ),
         migrations.CreateModel(
