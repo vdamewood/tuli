@@ -1,0 +1,31 @@
+{% comment %}
+Copyright 2019 Vincent Damewood
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+{% endcomment %}
+
+<table class="projectile-download-table">
+	<caption>Version {{release.version}}</caption>
+{% if release.binarypackage_set.count > 0 %}
+	<tr><th colspan="2">Binary Packages</th></tr>
+	{% for pkg in release.binarypackage_set.all|dictsort:'filename' %}
+		<tr><td>{{pkg.platform.name}} ({{pkg.format.name}})</td> <td><a href="{{pkg.filename}}">{{pkg.filename}}</a></td></tr>
+	{% endfor %}
+{% endif %}
+{% if release.sourcepackage_set.count > 0 %}
+	<tr><th colspan="2">Source Packages</th></tr>
+	{% for pkg in release.sourcepackage_set.all|dictsort:'filename' %}
+		<tr><td>{{pkg.format.name}}</td> <td><a href="{{pkg.filename}}">{{pkg.filename}}</a></td></tr>
+	{% endfor %}
+{% endif %}
+</table>
