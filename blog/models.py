@@ -16,24 +16,7 @@ from datetime import date
 from django.db import models
 from django.conf import settings
 
-class Image(models.Model):
-    lookup = models.CharField(max_length=48, db_index=True)
-
-    def __str__(self):
-        return(self.lookup)
-
-class ImageFile(models.Model):
-    image = models.ForeignKey(Image, models.CASCADE)
-    file = models.FileField(upload_to=settings.LOKI_PATH)
-    width = models.SmallIntegerField()
-
-    sequence = models.SmallIntegerField()
-    def url(self):
-        return self.file.url
-
-    class Meta:
-        get_latest_by = ('image', 'sequence')
-        unique_together = ('image', 'sequence')
+from loki.models import ContentField
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -42,46 +25,6 @@ class Tag(models.Model):
     def __str__(self):
         return format(self.name)
 
-class Content:
-    def __init__(self, raw):
-        self._raw = raw
-        self._parsed = None
-        self._plain = None
-    def parse(self):
-        if self._parsed is None:
-            from .parser import LokiParser
-            p = LokiParser()
-            p.feed(self._raw)
-            p.close()
-            self._parsed = p.get_output()
-        return self._parsed
-    def plain(self):
-        raise NotImplementedError()
-    def __str__(self):
-        return self._raw
-
-class ContentField(models.TextField):
-    def from_db_value(self, value, expression, connection):
-        if value is None:
-            return value
-        elif isinstance(value, str):
-            return Content(value)
-        else:
-            raise TypeError()
-    def to_python(self, value):
-        if isinstance(value, Content) or value is None:
-            return value
-        elif isinstance(value, str):
-            return Content(value)
-        else:
-            raise TypeError()
-    def get_prep_value(self, value):
-        if isinstance(value, Content):
-            return str(value)
-        elif isinstance(value, str) or value is None:
-            return value
-        else:
-            raise TypeError("Type {} not supported.".format(type(value)))
 
 class Post(models.Model):
     title = models.CharField(max_length=50, unique=True)

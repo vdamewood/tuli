@@ -13,12 +13,11 @@
 # limitations under the License.
 
 from django.contrib import admin
-from . import models
+from .models import Image, ImageFile
 
-@admin.register(models.Post)
-class PostAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("title",)}
+class ImageFileInline(admin.TabularInline):
+    model = ImageFile
 
-@admin.register(models.Tag)
-class TagAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("name",)}
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+	inlines = [ImageFileInline]

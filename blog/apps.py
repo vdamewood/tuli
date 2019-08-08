@@ -17,3 +17,4 @@ from django.apps import AppConfig
 
 class BlogConfig(AppConfig):
     name = 'loki.blog'
+    verbose_name = "Loki Blog"

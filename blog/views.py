@@ -17,7 +17,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import Post, Tag
 
 def index(request):
-    return render(request, 'loki/index.html', {
+    return render(request, 'loki/blog/index.html', {
         'posts': Post.objects.order_by('created'),
         'tags': Tag.objects.order_by('name'),
     })
@@ -27,12 +27,12 @@ def posts(request):
 
 def post(request, slug):
     p = get_object_or_404(Post, slug=slug)
-    return render(request, 'loki/post.html', {'post': p})
+    return render(request, 'loki/blog/post.html', {'post': p})
 
 def tags(request):
     return redirect('loki-home')
 
 def tag(request, slug):
-    return render(request, 'loki/tag.html', {
+    return render(request, 'loki/blog/tag.html', {
         'tag': get_object_or_404(Tag, slug=slug),
     })
