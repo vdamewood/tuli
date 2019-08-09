@@ -13,6 +13,8 @@
 # limitations under the License.
 
 from datetime import date
+
+from django.conf import settings
 from django.db import models
 
 import loki.models
@@ -107,26 +109,24 @@ class Release(models.Model):
     def __str__(self):
         return ("{} v{}.{}.{}{}").format(self.component, self.major, self.minor, self.patch, self.prerelease)
 
+def upload(inst, filename):
+    return settings.LOKI_PATH + "/software/" + filename
 
-class Download(models.Model):
-    filename = models.CharField(max_length=250)
-
-    def __str__(self):
-        return self.filename
-
-
-class SourcePackage(Download):
+class SourcePackage(models.Model):
     release = models.ForeignKey(Release, on_delete=models.CASCADE)
     format = models.ForeignKey(Format, on_delete=models.PROTECT)
+    file = models.FileField(upload_to=upload)
 
 
-class BinaryPackage(Download):
+class BinaryPackage(models.Model):
     release = models.ForeignKey(Release, on_delete=models.CASCADE)
     platform = models.ForeignKey(Platform, on_delete=models.PROTECT)
     format = models.ForeignKey(Format, on_delete=models.PROTECT)
+    file = models.FileField(upload_to=upload)
 
 
-class SupportPackage(Download):
+class SupportPackage(models.Model):
     release = models.ForeignKey(Release, on_delete=models.CASCADE)
     format = models.ForeignKey(Format, on_delete=models.PROTECT)
     description = models.CharField(max_length=250)
+    file = models.FileField(upload_to=upload)

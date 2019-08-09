@@ -87,40 +87,33 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Download',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('filename', models.CharField(max_length=250)),
-            ],
-        ),
-        migrations.CreateModel(
             name='SourcePackage',
             fields=[
-                ('download_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='software.Download')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('file', models.FileField(upload_to=loki.software.models.upload)),
                 ('release', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='software.Release')),
                 ('format', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='software.Format')),
             ],
-            bases=('software.Download',),
         ),
         migrations.CreateModel(
             name='BinaryPackage',
             fields=[
-                ('download_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='software.Download')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('file', models.FileField(upload_to=loki.software.models.upload)),
                 ('release', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='software.Release')),
                 ('platform', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='software.Platform')),
                 ('format', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='software.Format')),
             ],
-            bases=('software.Download',),
         ),
         migrations.CreateModel(
             name='SupportPackage',
             fields=[
-                ('download_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='software.Download')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('file', models.FileField(upload_to=loki.software.models.upload)),
                 ('description', models.CharField(max_length=250)),
                 ('format', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='software.Format')),
                 ('release', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='software.Release')),
             ],
-            bases=('software.download',),
         ),
         migrations.AlterUniqueTogether(
             name='component',
