@@ -19,7 +19,7 @@ limitations under the License.
 
 {% block content %}
 <h1>{{project.name}}—{{project.description}}</h1>
-{{project.overview|safe}}
+{{project.overview.parse|safe}}
 
 {% if project.main_component %}
 {% include "loki/software/component.html" with component=project.main_component only %}
