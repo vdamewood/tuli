@@ -15,29 +15,29 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from .models import Project
+from . import models as m
 
-def index(request):
+def Index(request):
     return redirect(reverse('loki-software-project-list'))
 
-def project_list(request):
+def ProjectList(request):
     return render(request,
-        "loki/index.html",
+        "loki/software/project_list.html",
         {
-            "projects": Project.objects.order_by('name')
+            "projects": m.Project.objects.order_by('name')
         }
     )
 
-def project(request, project):
+def Project(request, project):
     return render(request,
-        "loki/project.html",
+        "loki/software/project.html",
         {
-            "project": get_object_or_404(Project, slug=project)
+            "project": get_object_or_404(m.Project, slug=project)
         }
     )
 
-def download_list(request, project, component):
+def DownloadList(request, project, component):
     return HttpResponse("Downloads for: «{}»-«{}»".format(project, component))
 
-def download(request, project, component, major, minor, patch, prerelease):
+def Download(request, project, component, major, minor, patch, prerelease):
     return HttpResponse("Download: «{}»-«{}»-«{}»-«{}»-«{}»-«{}»".format(project, component, major, minor, patch, prerelease))

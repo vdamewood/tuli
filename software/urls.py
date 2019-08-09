@@ -16,47 +16,47 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name="loki-software-home"),
-    path('projects/', views.project_list, name="loki-software-project-list"),
+    path('', views.Index, name='loki-software-index'),
+    path('projects/', views.ProjectList, name='loki-software-project-list'),
     path('projects/<slug:project>/',
-        views.project,
-        name="loki-software-project-show"),
+        views.Project,
+        name="loki-software-project"),
     path(
         'projects/<slug:project>/downloads/',
-        views.download_list,
+        views.DownloadList,
         {
             'component': '',
         },
     ),
     path(
         'projects/<slug:project>/downloads/v<int:major>.<int:minor>.<int:patch><str:prerelease>',
-        views.download,
+        views.Download,
         {
             'component': '',
         },
     ),
     path(
         'projects/<slug:project>/downloads/<slug:component>-v<int:major>.<int:minor>.<int:patch>',
-        views.download,
+        views.Download,
         {
             'prerelease': '',
         },
     ),
     path(
         'projects/<slug:project>/downloads/<slug:component>-v<int:major>.<int:minor>.<int:patch><str:prerelease>',
-        views.download,
+        views.Download,
         {
         },
     ),
     path(
         'projects/<slug:project>/downloads/<slug:component>',
-        views.download_list,
+        views.DownloadList,
         {
         },
     ),
     path(
         'projects/<slug:project>/downloads/v<int:major>.<int:minor>.<int:patch>',
-        views.download,
+        views.Download,
         {
             'component': '',
             'prerelease': '',

@@ -14,25 +14,25 @@
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Post, Tag
+from . import models as m
 
-def index(request):
+def Index(request):
     return render(request, 'loki/blog/index.html', {
-        'posts': Post.objects.order_by('created'),
-        'tags': Tag.objects.order_by('name'),
+        'posts': m.Post.objects.order_by('created'),
+        'tags': m.Tag.objects.order_by('name'),
     })
 
-def posts(request):
-    return redirect('loki-home')
+def PostList(request):
+    return redirect('loki-blog-index')
 
-def post(request, slug):
-    p = get_object_or_404(Post, slug=slug)
+def Post(request, slug):
+    p = get_object_or_404(m.Post, slug=slug)
     return render(request, 'loki/blog/post.html', {'post': p})
 
-def tags(request):
-    return redirect('loki-home')
+def TagList(request):
+    return redirect('loki-blog-index')
 
-def tag(request, slug):
+def Tag(request, slug):
     return render(request, 'loki/blog/tag.html', {
-        'tag': get_object_or_404(Tag, slug=slug),
+        'tag': get_object_or_404(m.Tag, slug=slug),
     })

@@ -16,9 +16,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='loki-home'),
-    path('posts/', views.posts, name='loki-post-list'),
-    path('posts/<slug>', views.post, name='loki-post-show'),
-    path('tags/', views.tags, name='loki-tag-list'),
-    path('tags/<slug>', views.tag, name='loki-tag-show'),
+    path('', views.Index, name='loki-blog-index'),
+    path('posts/', views.PostList, name='loki-blog-post-list'),
+    path('posts/<slug>', views.Post, name='loki-blog-post'),
+    path('tags/', views.TagList, name='loki-blog-tag-list'),
+    path('tags/<slug>', views.Tag, name='loki-blog-tag'),
 ]
