@@ -24,16 +24,15 @@ class Image(models.Model):
 
 class ImageFile(models.Model):
     image = models.ForeignKey(Image, models.CASCADE)
-    file = models.FileField(upload_to=settings.LOKI_PATH)
-    width = models.SmallIntegerField()
+    file = models.ImageField(upload_to=settings.LOKI_PATH, height_field="height", width_field="width")
+    height = models.PositiveSmallIntegerField()
+    width = models.PositiveSmallIntegerField()
 
-    sequence = models.SmallIntegerField()
     def url(self):
         return self.file.url
 
     class Meta:
-        get_latest_by = ('image', 'sequence')
-        unique_together = ('image', 'sequence')
+        get_latest_by = ('image', '-width', '-height')
 
 class Content:
     def __init__(self, raw):

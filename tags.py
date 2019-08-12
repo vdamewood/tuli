@@ -104,7 +104,7 @@ class ImageTag(ClosedTag):
         else:
             tpl = loader.get_template('loki/image.html')
             ctx = {}
-            ctx['files'] = image.imagefile_set.order_by('sequence')
+            ctx['files'] = image.imagefile_set.order_by('-width', '-height')
             try:
                 ctx['caption'] = attributes['caption']
             except KeyError:

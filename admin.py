@@ -16,8 +16,9 @@ from django.contrib import admin
 from .models import Image, ImageFile
 
 class ImageFileInline(admin.TabularInline):
+    fields = ('file',)
     model = ImageFile
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-	inlines = [ImageFileInline]
+    inlines = [ImageFileInline]
