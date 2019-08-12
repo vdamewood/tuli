@@ -107,16 +107,6 @@ class Migration(migrations.Migration):
                 ('format', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='software.Format')),
             ],
         ),
-        migrations.CreateModel(
-            name='SupportPackage',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to=loki.software.models.upload)),
-                ('description', models.CharField(max_length=250)),
-                ('format', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='software.Format')),
-                ('release', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='software.Release')),
-            ],
-        ),
         migrations.AlterUniqueTogether(
             name='component',
             unique_together={('project', 'name')},

@@ -125,10 +125,3 @@ class BinaryPackage(models.Model):
     platform = models.ForeignKey(Platform, on_delete=models.PROTECT)
     format = models.ForeignKey(Format, on_delete=models.PROTECT)
     file = models.FileField(upload_to=upload)
-
-
-class SupportPackage(models.Model):
-    release = models.ForeignKey(Release, on_delete=models.CASCADE)
-    format = models.ForeignKey(Format, on_delete=models.PROTECT)
-    description = models.CharField(max_length=250)
-    file = models.FileField(upload_to=upload)

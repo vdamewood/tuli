@@ -34,18 +34,12 @@ class SourcePackageInline(admin.TabularInline):
     model = models.SourcePackage
 
 class BinaryPackageInline(admin.TabularInline):
-    fields = ('format', 'platform', 'file')
+    fields = ('platform', 'format', 'file')
     model = models.BinaryPackage
-
-class SupportPackageInline(admin.TabularInline):
-    fields = ('format', 'description', 'file')
-    model = models.SupportPackage
-
 
 @admin.register(models.Release)
 class ReleaseAdmin(admin.ModelAdmin):
     inlines = [
         SourcePackageInline,
         BinaryPackageInline,
-        SupportPackageInline,
     ]
