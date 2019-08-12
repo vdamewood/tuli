@@ -44,6 +44,8 @@ class LokiParser(HTMLParser):
                 self._add("[Error in {} tag: {}]".format(
                     e.tag_name,
                     e.message))
+            except Exception as e:
+                self._add("Unexpected error: {}: {}".format(str(type(e)), e))
         else:
             self._add(self.get_starttag_text())
 
