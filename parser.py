@@ -68,7 +68,7 @@ class LokiParser(HTMLParser):
     def handle_endtag(self, tag):
         if tag[:5] == "loki-":
             try:
-                self._add(tags.tag(tag[5:]).end(dict(attrs)))
+                self._add(tags.tag(tag[5:]).end())
             except tags.TagNotFound as e:
                 self._add("[Unknown Tag: {}]".format(
                     e.tag_name))
