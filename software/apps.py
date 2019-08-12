@@ -14,6 +14,7 @@
 
 from django.apps import AppConfig
 from django.db.models.signals import post_migrate
+from django.urls import reverse
 
 _licenses = [
     ('BSD(2C)', '2-clause BSD License',
@@ -80,8 +81,28 @@ def add_default_data(sender, **kwargs):
             new_format.suffix = suffix
             new_format.save()
 
+def _link_lookup(target):
+    kind, slug = target.split(":", 1)
+    if kind != 'project':
+        from loki.tags import LinkError
+        raise LinkError('software', target, "Invalid target type: {}".format(kind))
+
+    try:
+        from .models import Project
+        my_proj = Project.objects.get(slug=slug)
+    except Project.DoesNotExist as e:
+        from loki.tags import LinkTargetNotFound
+        raise LinkTargetNotFound('software', target)
+    else:
+        return {
+            "url": reverse('loki-software-project', args=(my_proj.slug,)),
+            "title": my_proj.name,
+        }
+
 
 class SoftwareConfig(AppConfig):
     name = 'loki.software'
     def ready(self):
         post_migrate.connect(add_default_data, sender=self)
+        from loki.tags import register_link
+        register_link('software', _link_lookup)
