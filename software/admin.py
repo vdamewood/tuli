@@ -30,15 +30,15 @@ class ProjectAdmin(admin.ModelAdmin):
 
 
 class SourcePackageInline(admin.TabularInline):
-    fields = ('format', 'filename')
+    fields = ('format', 'file')
     model = models.SourcePackage
 
 class BinaryPackageInline(admin.TabularInline):
-    fields = ('format', 'platform', 'filename')
+    fields = ('format', 'platform', 'file')
     model = models.BinaryPackage
 
 class SupportPackageInline(admin.TabularInline):
-    fields = ('format', 'description', 'filename')
+    fields = ('format', 'description', 'file')
     model = models.SupportPackage
 
 

@@ -13,19 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 {% endcomment %}
-
+{% load loki_software_tags %}
 <table class="loki-software-download-table">
 	<caption>Version {{release.version}}</caption>
 {% if release.binarypackage_set.count > 0 %}
 	<tr><th colspan="2">Binary Packages</th></tr>
-	{% for pkg in release.binarypackage_set.all|dictsort:'filename' %}
-		<tr><td>{{pkg.platform.name}} ({{pkg.format.name}})</td> <td><a href="{{pkg.filename}}">{{pkg.filename}}</a></td></tr>
+	{% for pkg in release.binarypackage_set.all|dictsort:'file.url' %}
+		<tr><td>{{pkg.platform.name}} ({{pkg.format.name}})</td> <td><a href="{{pkg.file.url}}">{{pkg.file|filename}}</a></td></tr>
 	{% endfor %}
 {% endif %}
 {% if release.sourcepackage_set.count > 0 %}
 	<tr><th colspan="2">Source Packages</th></tr>
-	{% for pkg in release.sourcepackage_set.all|dictsort:'filename' %}
-		<tr><td>{{pkg.format.name}}</td> <td><a href="{{pkg.filename}}">{{pkg.filename}}</a></td></tr>
+	{% for pkg in release.sourcepackage_set.all|dictsort:'file.url' %}
+		<tr><td>{{pkg.format.name}}</td> <td><a href="{{pkg.file.url}}">{{pkg.file|filename}}</a></td></tr>
 	{% endfor %}
 {% endif %}
 </table>
