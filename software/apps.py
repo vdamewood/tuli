@@ -102,6 +102,7 @@ def _link_lookup(target):
 
 class SoftwareConfig(AppConfig):
     name = 'loki.software'
+    verbose_name = 'Loki Software Catalog'
     def ready(self):
         post_migrate.connect(add_default_data, sender=self)
         from loki.tags import register_link
