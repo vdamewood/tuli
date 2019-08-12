@@ -123,5 +123,4 @@ def tag(tag_name):
         raise TagNotFoundError(tag_name)
 
 def register_link(name, callback):
-    print("Registering \"{}\" to: {}".format(name, callback))
     _link_list[name] = callback
