@@ -30,6 +30,8 @@ class License(models.Model):
 
 class Platform(models.Model):
     name = models.CharField(max_length=50)
+    separator = models.CharField(max_length=1, default='-')
+    filename = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
