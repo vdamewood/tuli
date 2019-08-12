@@ -112,7 +112,7 @@ class Release(models.Model):
         return ("{} v{}.{}.{}{}").format(self.component, self.major, self.minor, self.patch, self.prerelease)
 
 def upload(inst, filename):
-    return settings.LOKI_PATH + "/software/" + filename
+    return settings.LOKI_PATH + "/swcat/" + filename
 
 class SourcePackage(models.Model):
     release = models.ForeignKey(Release, on_delete=models.CASCADE)

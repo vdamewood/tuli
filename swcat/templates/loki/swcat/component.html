@@ -20,17 +20,17 @@ limitations under the License.
     <h2>Component Details: {{component.name}}</h2>
 {% endif %}
 {% if component.description != "" %}
-    <p class="loki-software-component-description">{{component.description}}</p>
+    <p class="loki-swcat-component-description">{{component.description}}</p>
 {% endif %}
-<p class="loki-software-license">License: <a href="{{component.license.url}}">{{ component.license.name }}</a></p>
+<p class="loki-swcat-license">License: <a href="{{component.license.url}}">{{ component.license.name }}</a></p>
 {% if component.repo != "" %}
-    <p class="loki-software-repo">Repository: <a href="{{ component.repo }}">{{ component.repo }}</a></p>
+    <p class="loki-swcat-repo">Repository: <a href="{{ component.repo }}">{{ component.repo }}</a></p>
 {% endif %}
 {% if component.tracker != "" %}
-    <p class="loki-software-tracker">Bug Tracker: <a href="{{ component.tracker }}">{{ component.tracker }}</a></p>
+    <p class="loki-swcat-tracker">Bug Tracker: <a href="{{ component.tracker }}">{{ component.tracker }}</a></p>
 {% endif %}
 
 {% if component.latest %}
 <h3>Downloads</h3>
-{% include 'loki/software/download_table.html' with release=component.latest only %}
+{% include 'loki/swcat/download_table.html' with release=component.latest only %}
 {%endif%}

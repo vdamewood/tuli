@@ -65,7 +65,7 @@ _formats = [
 
 
 def add_default_data(sender, **kwargs):
-    License = kwargs['apps'].get_model('software', 'License')
+    License = kwargs['apps'].get_model('swcat', 'License')
     if License.objects.count() == 0:
         for name, abbreviation, url in _licenses:
             new_license = License()
@@ -73,7 +73,7 @@ def add_default_data(sender, **kwargs):
             new_license.abbreviation = abbreviation
             new_license.url = url
             new_license.save()
-    Format = kwargs['apps'].get_model('software', 'Format')
+    Format = kwargs['apps'].get_model('swcat', 'Format')
     if Format.objects.count() == 0:
         for name, suffix in _formats:
             new_format = Format()
@@ -85,25 +85,25 @@ def _link_lookup(target):
     kind, slug = target.split(":", 1)
     if kind != 'project':
         from loki.tags import LinkError
-        raise LinkError('software', target, "Invalid target type: {}".format(kind))
+        raise LinkError('swcat', target, "Invalid target type: {}".format(kind))
 
     try:
         from .models import Project
         my_proj = Project.objects.get(slug=slug)
     except Project.DoesNotExist as e:
         from loki.tags import LinkTargetNotFound
-        raise LinkTargetNotFound('software', target)
+        raise LinkTargetNotFound('swcat', target)
     else:
         return {
-            "url": reverse('loki-software-project', args=(my_proj.slug,)),
+            "url": reverse('loki-swcat-project', args=(my_proj.slug,)),
             "title": my_proj.name,
         }
 
 
-class SoftwareConfig(AppConfig):
-    name = 'loki.software'
+class SwcatConfig(AppConfig):
+    name = 'loki.swcat'
     verbose_name = 'Loki Software Catalog'
     def ready(self):
         post_migrate.connect(add_default_data, sender=self)
         from loki.tags import register_link
-        register_link('software', _link_lookup)
+        register_link('swcat', _link_lookup)

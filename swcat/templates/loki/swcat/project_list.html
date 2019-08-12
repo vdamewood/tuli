@@ -14,19 +14,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 {% endcomment %}
-
-{% block title %}{{project.name}}{% endblock %}
+{% block title %}Projects{% endblock %}
 
 {% block content %}
-<h1>{{project.name}}—{{project.description}}</h1>
-{{project.overview.parse|safe}}
+<h1>Projects</h1>
 
-{% if project.main_component %}
-{% include "loki/software/component.html" with component=project.main_component only %}
+{% if projects %}
+	<ul>
+	{% for project in projects %}
+		<li><a href="{% url 'loki-swcat-project' project.slug %}">{{project.name}}</a>—{{project.description}}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No projects are available.</p>
 {% endif %}
-
-{% for component in project.components %}
-{% include "loki/software/component.html" with component=component only %}
-{% endfor %}
-
 {% endblock %}
