@@ -32,6 +32,16 @@ class TagError(Exception):
         self.tag_name = tag_name
         self.message = message
 
+class LinkError(Exception):
+    def __init__(self, package, target, message):
+        self.package = package
+        self.target = target
+        self.message = message
+
+class LinkTargetNotFound(Exception):
+    def __init__(self, package, target):
+        self.package = package
+        self.target = target
 
 class Tag:
     def start(self, attributes):
@@ -50,6 +60,37 @@ class ClosedTag(Tag):
 
     def end(self):
         return ''
+
+_link_list = {}
+
+class LinkTag(Tag):
+    def _get_link(self, target_str):
+        global _link_list
+        pkg, target = target_str.split(":", 1)
+        return _link_list[pkg](target)
+    def start(self, attributes):
+        try:
+            target = self._get_link(attributes['target'])
+        except LinkTargetNotFound as e:
+            return "[Link target {}:{} not found.]".format(e.package, e.target)
+        except LinkError as e:
+            return "[Link error in package {} for target {}: {}]" \
+                .format(e.package, e.target, e.message)
+        else:
+            return '<a href="{}">'.format(target['url'])
+    def closed_start(self, attributes):
+        try:
+            target = self._get_link(attributes['target'])
+        except LinkTargetNotFound as e:
+            return "[Link target {}:{} not found.]".format(e.package, e.target)
+        except LinkError as e:
+            return "[Link error in package {} for target {}: {}]" \
+                .format(e.package, e.target, e.message)
+        else:
+            return '<a href="{}">{}</a>'.format(target['url'], target['title'])
+    def end(self):
+        return '</a>'
+
 
 class ImageTag(ClosedTag):
     def start(self, attributes):
@@ -71,7 +112,8 @@ class ImageTag(ClosedTag):
             return tpl.render(ctx)
 
 _tag_list = {
-    'image': ImageTag()
+    'image': ImageTag(),
+    'link': LinkTag(),
 }
 
 def tag(tag_name):
@@ -79,3 +121,7 @@ def tag(tag_name):
         return _tag_list[tag_name]
     except KeyError:
         raise TagNotFoundError(tag_name)
+
+def register_link(name, callback):
+    print("Registering \"{}\" to: {}".format(name, callback))
+    _link_list[name] = callback
