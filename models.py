@@ -23,7 +23,7 @@ class Image(models.Model):
         return(self.lookup)
 
 def image_file_upload(inst, filename):
-    return "{}images/{}".format(settings.LOKI_MEDIA_PATH, filename)
+    return "{}images/{}".format(settings.TULI_MEDIA_PATH, filename)
 
 class ImageFile(models.Model):
     image = models.ForeignKey(Image, models.CASCADE)
