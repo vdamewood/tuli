@@ -21,45 +21,4 @@ urlpatterns = [
     path('projects/<slug:project>/',
         views.Project,
         name="tuli-swcat-project"),
-    path(
-        'projects/<slug:project>/downloads/',
-        views.DownloadList,
-        {
-            'component': '',
-        },
-    ),
-    path(
-        'projects/<slug:project>/downloads/v<int:major>.<int:minor>.<int:patch><str:prerelease>',
-        views.Download,
-        {
-            'component': '',
-        },
-    ),
-    path(
-        'projects/<slug:project>/downloads/<slug:component>-v<int:major>.<int:minor>.<int:patch>',
-        views.Download,
-        {
-            'prerelease': '',
-        },
-    ),
-    path(
-        'projects/<slug:project>/downloads/<slug:component>-v<int:major>.<int:minor>.<int:patch><str:prerelease>',
-        views.Download,
-        {
-        },
-    ),
-    path(
-        'projects/<slug:project>/downloads/<slug:component>',
-        views.DownloadList,
-        {
-        },
-    ),
-    path(
-        'projects/<slug:project>/downloads/v<int:major>.<int:minor>.<int:patch>',
-        views.Download,
-        {
-            'component': '',
-            'prerelease': '',
-        },
-    ),
 ]

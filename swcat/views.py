@@ -35,9 +35,3 @@ def Project(request, project):
             "project": get_object_or_404(m.Project, slug=project)
         }
     )
-
-def DownloadList(request, project, component):
-    return HttpResponse("Downloads for: «{}»-«{}»".format(project, component))
-
-def Download(request, project, component, major, minor, patch, prerelease):
-    return HttpResponse("Download: «{}»-«{}»-«{}»-«{}»-«{}»-«{}»".format(project, component, major, minor, patch, prerelease))
