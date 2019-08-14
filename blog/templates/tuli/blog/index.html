@@ -1,4 +1,4 @@
-{% extends 'loki/base.html' %}
+{% extends 'tuli/base.html' %}
 {% comment %}
 Copyright 2019 Vincent Damewood
 
@@ -14,12 +14,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 {% endcomment %}
-{% block title %}{{post.title}}{% endblock %}
+{% block title %}Blog{% endblock %}
 {% block content %}
-<h1>{{post.title}}</h1>
-<div>Created: {{post.created|date:'Y-m-d'}}</div>
-{% if post.edited != post.created %}
-<div>Edited: {{post.edited|date:'Y-m-d'}}</div>
+<h1>Blog</h1>
+{% if posts %}
+	<h2>Posts</h2>
+	<ul>
+	{% for post in posts %}
+		<li><a href="{% url 'tuli-blog-post' post.slug %}">{{post.title}}</a></li>
+	{% endfor %}
+		</ul>
+    </ul>
+{% else %}
+    <p>No posts are available.</p>
 {% endif %}
-{{post.content.parse|safe}}
+
+{% if tags %}
+<h2>Tags</h2>
+
+<p> | {% for tag in tags %}<a href="{% url 'tuli-blog-tag' tag.slug %}">{{tag.name}}</a> | {%endfor%}</p>
+{%endif %}
+
 {% endblock %}

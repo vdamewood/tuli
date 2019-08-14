@@ -2,7 +2,7 @@ import datetime
 from django.conf import settings
 from django.db import migrations, models
 
-import loki.models
+import tuli.models
 
 class Migration(migrations.Migration):
 
@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(unique=True)),
                 ('created', models.DateField(default=datetime.date.today)),
                 ('edited', models.DateField(auto_now=True)),
-                ('content', loki.models.ContentField()),
+                ('content', tuli.models.ContentField()),
                 ('tags', models.ManyToManyField(to='blog.Tag', blank=True)),
             ],
         ),

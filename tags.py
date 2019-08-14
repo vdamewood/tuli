@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from django.template import loader
-from loki.models import Image
+from tuli.models import Image
 
 
 class TagNotFound(Exception):
@@ -102,7 +102,7 @@ class ImageTag(ClosedTag):
             raise TagError('image',
                 "Image \"{}\" not found".format(attributes['lookup']))
         else:
-            tpl = loader.get_template('loki/image.html')
+            tpl = loader.get_template('tuli/image.html')
             ctx = {}
             ctx['files'] = image.imagefile_set.order_by('-width', '-height')
             try:

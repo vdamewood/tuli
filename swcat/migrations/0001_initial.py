@@ -16,7 +16,7 @@ import datetime
 from django.db import migrations, models
 import django.db.models.deletion
 
-import loki.models
+import tuli.models
 
 class Migration(migrations.Migration):
 
@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=50)),
                 ('slug', models.SlugField()),
                 ('description', models.CharField(max_length=250)),
-                ('overview', loki.models.ContentField()),
+                ('overview', tuli.models.ContentField()),
             ],
         ),
         migrations.CreateModel(
@@ -92,7 +92,7 @@ class Migration(migrations.Migration):
             name='SourcePackage',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to=loki.swcat.models.upload)),
+                ('file', models.FileField(upload_to=tuli.swcat.models.upload)),
                 ('release', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='swcat.Release')),
                 ('format', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='swcat.Format')),
             ],
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
             name='BinaryPackage',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to=loki.swcat.models.upload)),
+                ('file', models.FileField(upload_to=tuli.swcat.models.upload)),
                 ('release', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='swcat.Release')),
                 ('platform', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='swcat.Platform')),
                 ('format', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='swcat.Format')),

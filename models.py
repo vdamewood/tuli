@@ -24,7 +24,7 @@ class Image(models.Model):
 
 class ImageFile(models.Model):
     image = models.ForeignKey(Image, models.CASCADE)
-    file = models.ImageField(upload_to=settings.LOKI_PATH, height_field="height", width_field="width")
+    file = models.ImageField(upload_to=settings.TULI_PATH, height_field="height", width_field="width")
     height = models.PositiveSmallIntegerField()
     width = models.PositiveSmallIntegerField()
 
@@ -41,8 +41,8 @@ class Content:
         self._plain = None
     def parse(self):
         if self._parsed is None:
-            from .parser import LokiParser
-            p = LokiParser()
+            from .parser import TuliParser
+            p = TuliParser()
             p.feed(self._raw)
             p.close()
             self._parsed = p.get_output()

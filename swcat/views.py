@@ -18,11 +18,11 @@ from django.urls import reverse
 from . import models as m
 
 def Index(request):
-    return redirect(reverse('loki-swcat-project-list'))
+    return redirect(reverse('tuli-swcat-project-list'))
 
 def ProjectList(request):
     return render(request,
-        "loki/swcat/project_list.html",
+        "tuli/swcat/project_list.html",
         {
             "projects": m.Project.objects.order_by('name')
         }
@@ -30,7 +30,7 @@ def ProjectList(request):
 
 def Project(request, project):
     return render(request,
-        "loki/swcat/project.html",
+        "tuli/swcat/project.html",
         {
             "project": get_object_or_404(m.Project, slug=project)
         }

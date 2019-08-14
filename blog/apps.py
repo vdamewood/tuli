@@ -18,25 +18,25 @@ from django.urls import reverse
 def _link_lookup(target):
     kind, slug = target.split(":", 1)
     if kind != 'post':
-        from loki.tags import LinkError
+        from tuli.tags import LinkError
         raise LinkError('blog', target, "Invalid target type: {}".format(kind))
 
     try:
         from .models import Post
         my_post = Post.objects.get(slug=slug)
     except Post.DoesNotExist as e:
-        from loki.tags import LinkTargetNotFound
+        from tuli.tags import LinkTargetNotFound
         raise LinkTargetNotFound('blog', target)
     else:
         return {
-            "url": reverse('loki-blog-post', args=(my_post.slug,)),
+            "url": reverse('tuli-blog-post', args=(my_post.slug,)),
             "title": my_post.title,
         }
 
 
 class BlogConfig(AppConfig):
-    name = 'loki.blog'
-    verbose_name = "Loki Blog"
+    name = 'tuli.blog'
+    verbose_name = "Tuli Blog"
     def ready(self):
-        from loki.tags import register_link
+        from tuli.tags import register_link
         register_link('blog', _link_lookup)

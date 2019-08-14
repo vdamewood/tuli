@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class LokiConfig(AppConfig):
-    name = 'loki'
-    verbose_name = "Loki (Core)"
+class TuliConfig(AppConfig):
+    name = 'tuli'
+    verbose_name = "Tuli (Core)"

@@ -16,11 +16,11 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('', views.Index, name='loki-swcat-index'),
-    path('projects/', views.ProjectList, name='loki-swcat-project-list'),
+    path('', views.Index, name='tuli-swcat-index'),
+    path('projects/', views.ProjectList, name='tuli-swcat-project-list'),
     path('projects/<slug:project>/',
         views.Project,
-        name="loki-swcat-project"),
+        name="tuli-swcat-project"),
     path(
         'projects/<slug:project>/downloads/',
         views.DownloadList,

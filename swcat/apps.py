@@ -84,26 +84,26 @@ def add_default_data(sender, **kwargs):
 def _link_lookup(target):
     kind, slug = target.split(":", 1)
     if kind != 'project':
-        from loki.tags import LinkError
+        from tuli.tags import LinkError
         raise LinkError('swcat', target, "Invalid target type: {}".format(kind))
 
     try:
         from .models import Project
         my_proj = Project.objects.get(slug=slug)
     except Project.DoesNotExist as e:
-        from loki.tags import LinkTargetNotFound
+        from tuli.tags import LinkTargetNotFound
         raise LinkTargetNotFound('swcat', target)
     else:
         return {
-            "url": reverse('loki-swcat-project', args=(my_proj.slug,)),
+            "url": reverse('tuli-swcat-project', args=(my_proj.slug,)),
             "title": my_proj.name,
         }
 
 
 class SwcatConfig(AppConfig):
-    name = 'loki.swcat'
-    verbose_name = 'Loki Software Catalog'
+    name = 'tuli.swcat'
+    verbose_name = 'Tuli Software Catalog'
     def ready(self):
         post_migrate.connect(add_default_data, sender=self)
-        from loki.tags import register_link
+        from tuli.tags import register_link
         register_link('swcat', _link_lookup)

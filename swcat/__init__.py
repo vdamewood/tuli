@@ -1,1 +1,1 @@
-default_app_config = 'loki.swcat.apps.SwcatConfig'
+default_app_config = 'tuli.swcat.apps.SwcatConfig'

@@ -1,1 +1,1 @@
-default_app_config = 'loki.apps.LokiConfig'
+default_app_config = 'tuli.apps.TuliConfig'

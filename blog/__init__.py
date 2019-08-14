@@ -1,1 +1,1 @@
-default_app_config = 'loki.blog.apps.BlogConfig'
+default_app_config = 'tuli.blog.apps.BlogConfig'

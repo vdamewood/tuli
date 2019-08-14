@@ -1,4 +1,4 @@
-{% extends 'loki/base.html' %}
+{% extends 'tuli/base.html' %}
 {% comment %}
 Copyright 2019 Vincent Damewood
 
@@ -14,17 +14,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 {% endcomment %}
-{% block title %}{{tag.name}}{% endblock %}
-{% block content %}
-<h1>Posts Tagged “{{tag.name}}”</h1>
 
-{% if tag.post_set.count > 0 %}
-	<ul>
-	{% for post in tag.post_set.all %}
-		<li><a href="{% url 'loki-blog-post' post.slug %}">{{post.title}}</a> ({{post.created}})</li>
-	{% endfor %}
-    </ul>
-{% else %}
-    <p>This tag isn't assigned to any posts.</p>
+{% block title %}{{project.name}}{% endblock %}
+
+{% block content %}
+<h1>{{project.name}}—{{project.description}}</h1>
+{{project.overview.parse|safe}}
+
+{% if project.main_component %}
+{% include "tuli/swcat/component.html" with component=project.main_component only %}
 {% endif %}
+
+{% for component in project.components %}
+{% include "tuli/swcat/component.html" with component=component only %}
+{% endfor %}
+
 {% endblock %}

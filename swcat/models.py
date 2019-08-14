@@ -17,7 +17,7 @@ from datetime import date
 from django.conf import settings
 from django.db import models
 
-import loki.models
+import tuli.models
 
 class License(models.Model):
     name = models.CharField(max_length=55)
@@ -49,7 +49,7 @@ class Project(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50)
     description = models.CharField(max_length=250)
-    overview = loki.models.ContentField()
+    overview = tuli.models.ContentField()
 
     def main_component(self):
         try:
@@ -112,7 +112,7 @@ class Release(models.Model):
         return ("{} v{}.{}.{}{}").format(self.component, self.major, self.minor, self.patch, self.prerelease)
 
 def upload(inst, filename):
-    return settings.LOKI_PATH + "/swcat/" + filename
+    return settings.TULI_PATH + "/swcat/" + filename
 
 class SourcePackage(models.Model):
     release = models.ForeignKey(Release, on_delete=models.CASCADE)

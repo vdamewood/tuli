@@ -17,22 +17,22 @@ from django.shortcuts import get_object_or_404, redirect, render
 from . import models as m
 
 def Index(request):
-    return render(request, 'loki/blog/index.html', {
+    return render(request, 'tuli/blog/index.html', {
         'posts': m.Post.objects.order_by('created'),
         'tags': m.Tag.objects.order_by('name'),
     })
 
 def PostList(request):
-    return redirect('loki-blog-index')
+    return redirect('tuli-blog-index')
 
 def Post(request, slug):
     p = get_object_or_404(m.Post, slug=slug)
-    return render(request, 'loki/blog/post.html', {'post': p})
+    return render(request, 'tuli/blog/post.html', {'post': p})
 
 def TagList(request):
-    return redirect('loki-blog-index')
+    return redirect('tuli-blog-index')
 
 def Tag(request, slug):
-    return render(request, 'loki/blog/tag.html', {
+    return render(request, 'tuli/blog/tag.html', {
         'tag': get_object_or_404(m.Tag, slug=slug),
     })

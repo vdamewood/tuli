@@ -1,4 +1,4 @@
-{% extends 'loki/base.html' %}
+{% extends 'tuli/base.html' %}
 {% comment %}
 Copyright 2019 Vincent Damewood
 
@@ -22,7 +22,7 @@ limitations under the License.
 {% if projects %}
 	<ul>
 	{% for project in projects %}
-		<li><a href="{% url 'loki-swcat-project' project.slug %}">{{project.name}}</a>—{{project.description}}</li>
+		<li><a href="{% url 'tuli-swcat-project' project.slug %}">{{project.name}}</a>—{{project.description}}</li>
     {% endfor %}
     </ul>
 {% else %}

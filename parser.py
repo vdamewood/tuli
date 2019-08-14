@@ -15,9 +15,12 @@
 from html.parser import HTMLParser as HTMLParser
 from . import tags
 
-class LokiParser(HTMLParser):
+class TuliParser(HTMLParser):
+    tag_prefix = 'tuli-'
+    prefix_len = len(tag_prefix)
+
     def reset(self):
-        super(LokiParser, self).reset()
+        super().reset()
         self._buffer = []
         self._output = None
 
@@ -30,7 +33,7 @@ class LokiParser(HTMLParser):
         self._buffer.append(in_str)
 
     def handle_starttag(self, tag, attrs):
-        if tag[:5] == "loki-":
+        if tag[:prefix_len] == tag_prefix:
             try:
                 self._add(tags.tag(tag[5:]).start(dict(attrs)))
             except tags.TagNotFound as e:
@@ -50,7 +53,7 @@ class LokiParser(HTMLParser):
             self._add(self.get_starttag_text())
 
     def handle_startendtag(self, tag, attrs):
-        if tag[:5] == "loki-":
+        if tag[:prefix_len] == tag_prefix:
             try:
                 self._add(tags.tag(tag[5:]).closed_start(dict(attrs)))
             except tags.TagNotFound as e:
@@ -68,7 +71,7 @@ class LokiParser(HTMLParser):
             self._add(self.get_starttag_text())
 
     def handle_endtag(self, tag):
-        if tag[:5] == "loki-":
+        if tag[:prefix_len] == tag_prefix:
             try:
                 self._add(tags.tag(tag[5:]).end())
             except tags.TagNotFound as e:

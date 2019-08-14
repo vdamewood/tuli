@@ -23,8 +23,8 @@ class Migration(migrations.Migration):
             name='ImageFile',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='loki.Image')),
-                ('file', models.ImageField(upload_to=settings.LOKI_PATH, height_field="height", width_field="width")),
+                ('image', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tuli.Image')),
+                ('file', models.ImageField(upload_to=settings.TULI_PATH, height_field="height", width_field="width")),
                 ('height', models.PositiveSmallIntegerField()),
                 ('width', models.PositiveSmallIntegerField()),
             ],

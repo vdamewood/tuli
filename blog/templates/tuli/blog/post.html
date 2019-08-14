@@ -1,4 +1,4 @@
-{% extends 'loki/base.html' %}
+{% extends 'tuli/base.html' %}
 {% comment %}
 Copyright 2019 Vincent Damewood
 
@@ -14,19 +14,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 {% endcomment %}
-
-{% block title %}{{project.name}}{% endblock %}
-
+{% block title %}{{post.title}}{% endblock %}
 {% block content %}
-<h1>{{project.name}}—{{project.description}}</h1>
-{{project.overview.parse|safe}}
-
-{% if project.main_component %}
-{% include "loki/swcat/component.html" with component=project.main_component only %}
+<h1>{{post.title}}</h1>
+<div>Created: {{post.created|date:'Y-m-d'}}</div>
+{% if post.edited != post.created %}
+<div>Edited: {{post.edited|date:'Y-m-d'}}</div>
 {% endif %}
-
-{% for component in project.components %}
-{% include "loki/swcat/component.html" with component=component only %}
-{% endfor %}
-
+{{post.content.parse|safe}}
 {% endblock %}

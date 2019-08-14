@@ -16,7 +16,7 @@ from datetime import date
 from django.db import models
 from django.conf import settings
 
-from loki.models import ContentField
+from tuli.models import ContentField
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
