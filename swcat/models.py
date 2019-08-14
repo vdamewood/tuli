@@ -113,7 +113,10 @@ class Release(models.Model):
         return ("{} v{}.{}.{}{}").format(self.component, self.major, self.minor, self.patch, self.prerelease)
 
 def upload(inst, filename):
-    return "{}{}".format(settings.TULI_SWCAT_PATH, filename)
+    return "{}{}/{}".format(
+        settings.TULI_SWCAT_PATH,
+        inst.release.component.project.slug,
+        filename)
 
 class SourcePackage(models.Model):
     release = models.ForeignKey(Release, on_delete=models.CASCADE)
