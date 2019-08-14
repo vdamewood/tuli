@@ -22,9 +22,12 @@ class Image(models.Model):
     def __str__(self):
         return(self.lookup)
 
+def image_file_upload(inst, filename):
+    return "{}images/{}".format(settings.LOKI_MEDIA_PATH, filename)
+
 class ImageFile(models.Model):
     image = models.ForeignKey(Image, models.CASCADE)
-    file = models.ImageField(upload_to=settings.TULI_PATH, height_field="height", width_field="width")
+    file = models.ImageField(upload_to=image_file_upload, height_field="height", width_field="width")
     height = models.PositiveSmallIntegerField()
     width = models.PositiveSmallIntegerField()
 
