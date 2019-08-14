@@ -113,8 +113,8 @@ class Release(models.Model):
         return ("{} v{}.{}.{}{}").format(self.component, self.major, self.minor, self.patch, self.prerelease)
 
 def upload(inst, filename):
-    return "{}{}/{}".format(
-        settings.TULI_SWCAT_PATH,
+    return "{}/{}/{}".format(
+        settings.TULI_SWCAT_DIR,
         inst.release.component.project.slug,
         filename)
 
@@ -122,7 +122,6 @@ class SourcePackage(models.Model):
     release = models.ForeignKey(Release, on_delete=models.CASCADE)
     format = models.ForeignKey(Format, on_delete=models.PROTECT)
     file = models.FileField(upload_to=upload)
-
 
 class BinaryPackage(models.Model):
     release = models.ForeignKey(Release, on_delete=models.CASCADE)

@@ -18,6 +18,6 @@ TULI_TAG_PREFIX = _s.TULI_TAG_PREFIX \
     if hasattr(_s, 'TULI_TAG_PREFIX') \
     else 'tuli'
 
-TULI_MEDIA_PATH = _s.TULI_MEDIA_PATH \
-    if hasattr(_s, 'TULI_MEDIA_PATH') \
+TULI_MEDIA_DIR = _s.TULI_MEDIA_DIR \
+    if hasattr(_s, 'TULI_MEDIA_DIR') \
     else 'tuli'

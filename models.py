@@ -25,8 +25,8 @@ class Image(models.Model):
         return(self.lookup)
 
 def image_file_upload(inst, filename):
-    return "{}images/{}/{}".format(
-        settings.TULI_MEDIA_PATH,
+    return "{}/images/{}/{}".format(
+        settings.TULI_MEDIA_DIR,
         slugify(inst.image.lookup),
         filename)
 
