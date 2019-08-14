@@ -107,24 +107,32 @@ class Release(models.Model):
     revoked = models.BooleanField(default=False)
 
     def version(self):
-        return ("{}.{}.{}").format(self.major, self.minor, self.patch)
+        return ("{}.{}.{}{}").format(self.major, self.minor, self.patch, self.prerelease)
 
     def __str__(self):
         return ("{} v{}.{}.{}{}").format(self.component, self.major, self.minor, self.patch, self.prerelease)
 
 def upload(inst, filename):
-    return "{}/{}/{}".format(
+    return "{}/{}{}/v{}/{}".format(
         settings.TULI_SWCAT_DIR,
         inst.release.component.project.slug,
+        ''  if inst.release.component.slug == ''
+            else "/{}".format(inst.release.component.slug),
+        inst.release.version(),
         filename)
+
+# These are here to avoid a migration if upload
+# # needs to diverge for source and binary packages.
+upload_source = upload
+upload_binary = upload
 
 class SourcePackage(models.Model):
     release = models.ForeignKey(Release, on_delete=models.CASCADE)
     format = models.ForeignKey(Format, on_delete=models.PROTECT)
-    file = models.FileField(upload_to=upload)
+    file = models.FileField(upload_to=upload_source)
 
 class BinaryPackage(models.Model):
     release = models.ForeignKey(Release, on_delete=models.CASCADE)
     platform = models.ForeignKey(Platform, on_delete=models.PROTECT)
     format = models.ForeignKey(Format, on_delete=models.PROTECT)
-    file = models.FileField(upload_to=upload)
+    file = models.FileField(upload_to=upload_binary)

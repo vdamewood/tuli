@@ -15,5 +15,5 @@
 from django.conf import settings as _s
 
 TULI_SWCAT_DIR = _s.TULI_SWCAT_DIR \
-    if hasattr(_s, 'TULI_SWCAT_PATH') \
+    if hasattr(_s, 'TULI_SWCAT_DIR') \
     else 'swcat'

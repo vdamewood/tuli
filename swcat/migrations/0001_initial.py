@@ -92,7 +92,7 @@ class Migration(migrations.Migration):
             name='SourcePackage',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to=tuli.swcat.models.upload)),
+                ('file', models.FileField(upload_to=tuli.swcat.models.upload_source)),
                 ('release', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='swcat.Release')),
                 ('format', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='swcat.Format')),
             ],
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
             name='BinaryPackage',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to=tuli.swcat.models.upload)),
+                ('file', models.FileField(upload_to=tuli.swcat.models.upload_binary)),
                 ('release', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='swcat.Release')),
                 ('platform', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='swcat.Platform')),
                 ('format', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='swcat.Format')),
