@@ -15,9 +15,13 @@
 from html.parser import HTMLParser as HTMLParser
 from . import tags
 
+tag_prefix = 'tuli-'
+prefix_len = len(tag_prefix)
+def _should_catch(tag):
+    global tag_prefix, prefix_len
+    return tag[:prefix_len] == tag_prefix
+
 class TuliParser(HTMLParser):
-    tag_prefix = 'tuli-'
-    prefix_len = len(tag_prefix)
 
     def reset(self):
         super().reset()
@@ -33,7 +37,7 @@ class TuliParser(HTMLParser):
         self._buffer.append(in_str)
 
     def handle_starttag(self, tag, attrs):
-        if tag[:prefix_len] == tag_prefix:
+        if _should_catch(tag):
             try:
                 self._add(tags.tag(tag[5:]).start(dict(attrs)))
             except tags.TagNotFound as e:
@@ -53,7 +57,7 @@ class TuliParser(HTMLParser):
             self._add(self.get_starttag_text())
 
     def handle_startendtag(self, tag, attrs):
-        if tag[:prefix_len] == tag_prefix:
+        if _should_catch(tag):
             try:
                 self._add(tags.tag(tag[5:]).closed_start(dict(attrs)))
             except tags.TagNotFound as e:
@@ -71,7 +75,7 @@ class TuliParser(HTMLParser):
             self._add(self.get_starttag_text())
 
     def handle_endtag(self, tag):
-        if tag[:prefix_len] == tag_prefix:
+        if _should_catch(tag):
             try:
                 self._add(tags.tag(tag[5:]).end())
             except tags.TagNotFound as e:
