@@ -14,12 +14,10 @@
 
 from html.parser import HTMLParser as HTMLParser
 from . import tags
-from django.conf import settings
+from . import settings
 
 
-tag_prefix = '{}-'.format(settings.TULI_TAG_PREFIX
-    if hasattr(settings, 'TULI_TAG_PREFIX')
-    else 'tuli')
+tag_prefix = '{}-'.format(settings.TULI_TAG_PREFIX)
 prefix_len = len(tag_prefix)
 
 def _should_catch(tag):

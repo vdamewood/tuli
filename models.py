@@ -14,8 +14,9 @@
 
 from datetime import date
 from django.db import models
-from django.conf import settings
 from django.utils.text import slugify
+
+from . import settings
 
 class Image(models.Model):
     lookup = models.CharField(max_length=48, db_index=True)

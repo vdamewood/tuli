@@ -14,10 +14,11 @@
 
 from datetime import date
 
-from django.conf import settings
 from django.db import models
 
 import tuli.models
+from . import settings
+
 
 class License(models.Model):
     name = models.CharField(max_length=55)

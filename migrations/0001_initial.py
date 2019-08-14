@@ -1,6 +1,6 @@
 from django.db import migrations, models
 import django.db.models.deletion
-from django.conf import settings
+from tuli import settings
 
 from tuli.models import image_file_upload
 
