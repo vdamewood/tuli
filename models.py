@@ -15,6 +15,7 @@
 from datetime import date
 from django.db import models
 from django.conf import settings
+from django.utils.text import slugify
 
 class Image(models.Model):
     lookup = models.CharField(max_length=48, db_index=True)
@@ -23,7 +24,10 @@ class Image(models.Model):
         return(self.lookup)
 
 def image_file_upload(inst, filename):
-    return "{}images/{}".format(settings.TULI_MEDIA_PATH, filename)
+    return "{}images/{}/{}".format(
+        settings.TULI_MEDIA_PATH,
+        slugify(inst.image.lookup),
+        filename)
 
 class ImageFile(models.Model):
     image = models.ForeignKey(Image, models.CASCADE)
