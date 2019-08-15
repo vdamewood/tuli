@@ -56,6 +56,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=50)),
                 ('slug', models.SlugField()),
+                ('created', models.DateField(default=datetime.date.today)),
+                ('edited', models.DateField(auto_now=True)),
                 ('description', models.CharField(max_length=250)),
                 ('overview', tuli.models.ContentField()),
             ],

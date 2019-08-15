@@ -47,6 +47,8 @@ class Format(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50)
+    created = models.DateField(default=date.today)
+    edited = models.DateField(auto_now=True)
     description = models.CharField(max_length=250)
     overview = tuli.models.ContentField()
 
