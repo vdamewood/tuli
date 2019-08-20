@@ -67,7 +67,7 @@ _formats = [
 def add_default_data(sender, **kwargs):
     License = kwargs['apps'].get_model('swcat', 'License')
     if License.objects.count() == 0:
-        for name, abbreviation, url in _licenses:
+        for abbreviation, name, url in _licenses:
             new_license = License()
             new_license.name = name
             new_license.abbreviation = abbreviation
