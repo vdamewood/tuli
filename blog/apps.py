@@ -37,6 +37,7 @@ def _link_lookup(target):
 class BlogConfig(AppConfig):
     name = 'tuli.blog'
     verbose_name = "Tuli Blog"
+    default_auto_field = 'django.db.models.AutoField'
     def ready(self):
         from tuli.tags import register_link
         register_link('blog', _link_lookup)

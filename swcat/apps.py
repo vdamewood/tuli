@@ -103,6 +103,7 @@ def _link_lookup(target):
 class SwcatConfig(AppConfig):
     name = 'tuli.swcat'
     verbose_name = 'Tuli Software Catalog'
+    default_auto_field = 'django.db.models.AutoField'
     def ready(self):
         post_migrate.connect(add_default_data, sender=self)
         from tuli.tags import register_link
